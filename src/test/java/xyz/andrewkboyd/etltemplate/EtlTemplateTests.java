@@ -1,10 +1,10 @@
-package xyz.andrewkboyd.mitresiphon;
+package xyz.andrewkboyd.etltemplate;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MitreSiphonApplicationTests {
+class EtlTemplateTests {
 
 	@Test
 	void contextLoads() {
