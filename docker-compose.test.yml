@@ -3,14 +3,23 @@ services:
   postgres:
     image: "postgres"
     env_file:
-      - database.env
+      - ./env/test/database.env
     volumes:
       - database-data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
+  influxdb:
+    image: influxdb:latest
+    env_file:
+      - ./env/test/influxdb.env
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+      - ./service_configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - ./service_configs/influxdb/init:/docker-entrypoint-initdb.d
   kafka:
     image: confluentinc/cp-kafka:5.4.1
-    container_name: kafka
     ports:
       - "9093:9092"
     environment:
@@ -24,7 +33,6 @@ services:
       - zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:5.4.1
-    container_name: zookeeper
     ports:
       - "9182:2182"
     environment:
@@ -54,3 +62,4 @@ services:
       - kafka
 volumes:
   database-data:
+  influxdb-data:
