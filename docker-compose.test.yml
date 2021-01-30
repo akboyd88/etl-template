@@ -2,7 +2,6 @@ version: '3'
 services:
   postgres:
     image: "postgres"
-    restart: never
     env_file:
       - ./env/test/database.env
     volumes:
@@ -11,7 +10,6 @@ services:
       - "5432:5432"
   influxdb:
     image: influxdb:latest
-    restart: always
     env_file:
       - ./env/test/influxdb.env
     ports:
@@ -22,7 +20,6 @@ services:
       - ./service_configs/influxdb/init:/docker-entrypoint-initdb.d
   kafka:
     image: confluentinc/cp-kafka:5.4.1
-    restart: never
     ports:
       - "9093:9092"
     environment:
