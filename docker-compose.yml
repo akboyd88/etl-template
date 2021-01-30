@@ -23,18 +23,25 @@ services:
       - "9092:9092"
     environment:
       - KAFKA_BROKER_ID=1
+      - KAFKA_LOG_DIRS=/logs
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2182
       - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:29094,PLAINTEXT_HOST://kafka:9092
       - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:29094,PLAINTEXT_HOST://0.0.0.0:9092
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    volumes:
+      - kafka-logs:/logs
     depends_on:
       - zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:5.4.1
+    volumes:
+      - zookeeper-data:/datalog
     ports:
       - "9182:2182"
     environment:
       - ZOOKEEPER_CLIENT_PORT=2182
 volumes:
   database-data:
+  kafka-logs:
+  zookeeper-data:
