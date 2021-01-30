@@ -4,7 +4,7 @@ services:
     image: "postgres"
     restart: never
     env_file:
-      - ./env/teset/database.env
+      - ./env/test/database.env
     volumes:
       - database-data:/var/lib/postgresql/data/
     ports:
