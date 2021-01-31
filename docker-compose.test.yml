@@ -89,3 +89,4 @@ volumes:
   kafka-logs:
   zookeeper-data:
   influxdb-data:
+  grafana_data:
