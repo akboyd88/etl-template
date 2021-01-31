@@ -9,6 +9,18 @@ services:
       - database-data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
+  reverse-proxy:
+    image: traefik:v2.4
+    restart: always
+    command: --configFile=/etc/traefik/traefik.toml
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./service_configs/traefik/certs:/certs
+      - ./service_configs/traefik/traefik.toml:/etc/traefik/traefik.toml
   influxdb:
     image: influxdb:latest
     restart: always
