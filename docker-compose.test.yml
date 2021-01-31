@@ -8,6 +8,19 @@ services:
       - database-data:/var/lib/postgresql/data/
     expose:
       - "5432"
+  grafana:
+    image: grafana/grafana:7.3.7
+    labels:
+      - "traefik.http.routers.grafana.rule=Host(`grafana.docker.localhost`)"
+    expose:
+      - "3000"
+    user: "104"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./service_configs/grafana/dash_boards:/etc/grafana/provisioning/dashboards
+      - ./service_configs/grafana/data_sources:/etc/grafana/provisioning/datasources
+    env_file: 
+      - ./env/test/grafana.env
   influxdb:
     image: influxdb:latest
     env_file:

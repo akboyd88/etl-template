@@ -9,6 +9,19 @@ services:
     depends_on:
       - postgres
       - kafka
+  grafana:
+    image: grafana/grafana:7.3.7
+    labels:
+      - "traefik.http.routers.grafana.rule=Host(`grafana.docker.localhost`)"
+    expose:
+      - "3000"
+    user: "104"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./service_configs/grafana/dash_boards:/etc/grafana/provisioning/dashboards
+      - ./service_configs/grafana/data_sources:/etc/grafana/provisioning/datasources
+    env_file: 
+      - ./env/prd/grafana.env
   reverse-proxy:
     image: traefik:v2.4
     restart: always
@@ -21,6 +34,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./service_configs/traefik/certs:/certs
       - ./service_configs/traefik/traefik.toml:/etc/traefik/traefik.toml
+  influxdb:
+    image: influxdb:latest
+    env_file:
+      - ./env/prd/influxdb.env
+    expose:
+      - "8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+      - ./service_configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+      - ./service_configs/influxdb/init:/docker-entrypoint-initdb.d
   postgres:
     image: "postgres"
     env_file:
@@ -40,13 +63,21 @@ services:
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:29094,PLAINTEXT_HOST://kafka:9092
       - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:29094,PLAINTEXT_HOST://0.0.0.0:9092
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    volumes:
+      - kafka-logs:/logs
     depends_on:
       - zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:5.4.1
     expose:
       - "2182"
+    volumes:
+      - zookeeper-data:/datalog
     environment:
       - ZOOKEEPER_CLIENT_PORT=2182
 volumes:
   database-data:
+  kafka-logs:
+  zookeeper-data:
+  influxdb-data:
+  grafana_data:

@@ -9,6 +9,19 @@ services:
       - database-data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
+  grafana:
+    image: grafana/grafana:7.3.7
+    labels:
+      - "traefik.http.routers.grafana.rule=Host(`grafana.docker.localhost`)"
+    expose:
+      - "3000"
+    user: "104"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./service_configs/grafana/dash_boards:/etc/grafana/provisioning/dashboards
+      - ./service_configs/grafana/data_sources:/etc/grafana/provisioning/datasources
+    env_file: 
+      - ./env/dev/grafana.env
   reverse-proxy:
     image: traefik:v2.4
     restart: always
