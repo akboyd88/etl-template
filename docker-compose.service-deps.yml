@@ -95,3 +95,4 @@ volumes:
   zookeeper-data:
   influxdb-data:
   grafana_data:
+  cassandra_data:

@@ -16,20 +16,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TestController.class)
-public class TestControllerTests {
+class TestControllerTests {
     @Autowired
     private MockMvc mvc;
 
 
     @Test
     @WithMockUser(username = "test", roles={"user"})
-    public void echoNumberAPI() throws Exception
+    void echoNumberAPI() throws Exception
     {
         mvc.perform( MockMvcRequestBuilders
                 .get("/api/test/echo/11")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.echoNumber").value(11));
+
+    }
+
+
+    @Test
+    @WithMockUser(username = "test", roles={"user"})
+    void getLatestNumbers() throws Exception
+    {
+        mvc.perform( MockMvcRequestBuilders
+                .get("/api/test/latest-numbers")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.postgresNumber").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.cassandraNumber").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.influxNumber").exists());
+
 
     }
 }

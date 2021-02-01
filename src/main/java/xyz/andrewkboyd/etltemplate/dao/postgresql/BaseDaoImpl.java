@@ -1,4 +1,4 @@
-package xyz.andrewkboyd.etltemplate.dao;
+package xyz.andrewkboyd.etltemplate.dao.postgresql;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
