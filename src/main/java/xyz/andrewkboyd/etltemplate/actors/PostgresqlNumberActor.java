@@ -5,13 +5,22 @@ import org.springframework.stereotype.Component;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xyz.andrewkboyd.etltemplate.dao.interfaces.LatestNumbersDAO;
 
 @Component
 public class PostgresqlNumberActor {
     private static final Logger LOG = LoggerFactory.getLogger(PostgresqlNumberActor.class);
+    private final LatestNumbersDAO latestNumbersDAO;
+
+    public PostgresqlNumberActor(LatestNumbersDAO dao){
+        latestNumbersDAO = dao;
+    }
 
     @KafkaListener(topics = "test.number", groupId = "test.number.pg")
-    public void handleModifiedCve(String modifiedCveUpdate)  {
+    public void handleNumberUpdate(String value)  {
         LOG.debug("Received number update for postgresql");
+        var intVal = Integer.parseInt(value);
+        latestNumbersDAO.insertNewNumber(intVal);
+        LOG.info("Added number to data store {}", intVal);
     }
 }

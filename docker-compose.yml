@@ -5,7 +5,7 @@ services:
     labels:
       - "traefik.http.routers.etl-template.rule=Host(`etltemplate.docker.localhost`)"
     expose:
-      - "80"
+      - "9000"
     depends_on:
       - postgres
       - kafka

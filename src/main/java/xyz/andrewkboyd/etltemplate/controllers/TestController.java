@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.andrewkboyd.etltemplate.dao.interfaces.LatestNumbersDAO;
 import xyz.andrewkboyd.etltemplate.dto.EchoResult;
 import xyz.andrewkboyd.etltemplate.dto.LatestNumbers;
 
@@ -13,6 +14,12 @@ import xyz.andrewkboyd.etltemplate.dto.LatestNumbers;
 @RestController
 @RequestMapping("api/test")
 public class TestController {
+
+    private final LatestNumbersDAO postgresNumberDao;
+
+    public TestController(LatestNumbersDAO pgDao) {
+        postgresNumberDao = pgDao;
+    }
 
     /**
      * Echo a received number back to a client in JSON
@@ -32,7 +39,9 @@ public class TestController {
      */
     @GetMapping(value = "/latest-numbers", produces = "application/json")
     public LatestNumbers getLatestNumbers() {
-        return new LatestNumbers();
+        var latestNumbers = new LatestNumbers();
+        latestNumbers.setPostgresqlNumber(postgresNumberDao.getLatestNumber());
+        return latestNumbers;
     }
 
 }

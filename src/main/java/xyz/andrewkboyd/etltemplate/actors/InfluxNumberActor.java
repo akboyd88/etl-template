@@ -10,7 +10,7 @@ public class InfluxNumberActor {
     private static final Logger LOG = LoggerFactory.getLogger(InfluxNumberActor.class);
 
     @KafkaListener(topics = "test.number", groupId = "test.number.influx")
-    public void handleModifiedCve(String modifiedCveUpdate)  {
+    public void handleNumberUpdate(String modifiedCveUpdate)  {
         LOG.debug("Received number update for influxdb");
     }
 }

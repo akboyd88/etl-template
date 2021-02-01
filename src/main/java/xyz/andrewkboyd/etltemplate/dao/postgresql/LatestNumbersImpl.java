@@ -1,11 +1,11 @@
 package xyz.andrewkboyd.etltemplate.dao.postgresql;
 
 import org.springframework.transaction.annotation.Transactional;
-import xyz.andrewkboyd.etltemplate.dao.interfaces.LatestNumbers;
+import xyz.andrewkboyd.etltemplate.dao.interfaces.LatestNumbersDAO;
 import xyz.andrewkboyd.etltemplate.entities.postgresql.TestNumbers;
 
 
-public class LatestNumbersImpl extends BaseDaoImpl<TestNumbers> implements LatestNumbers {
+public class LatestNumbersImpl extends BaseDaoImpl<TestNumbers> implements LatestNumbersDAO {
 
     /**
      * Get the latest number from the store
