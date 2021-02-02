@@ -1,5 +1,6 @@
 package xyz.andrewkboyd.etltemplate.controllers;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,14 @@ import xyz.andrewkboyd.etltemplate.dto.LatestNumbers;
 public class TestController {
 
     private final LatestNumbersDAO postgresNumberDao;
+    private final LatestNumbersDAO influxNumbersDao;
 
-    public TestController(LatestNumbersDAO pgDao) {
+    public TestController(
+            @Qualifier("getPostgresqlLatestNumber") LatestNumbersDAO pgDao,
+            @Qualifier("getInfluxLatestNumber")LatestNumbersDAO influxDao
+    ) {
         postgresNumberDao = pgDao;
+        influxNumbersDao = influxDao;
     }
 
     /**
@@ -41,6 +47,7 @@ public class TestController {
     public LatestNumbers getLatestNumbers() {
         var latestNumbers = new LatestNumbers();
         latestNumbers.setPostgresqlNumber(postgresNumberDao.getLatestNumber());
+        latestNumbers.setInfluxNumber(influxNumbersDao.getLatestNumber());
         return latestNumbers;
     }
 

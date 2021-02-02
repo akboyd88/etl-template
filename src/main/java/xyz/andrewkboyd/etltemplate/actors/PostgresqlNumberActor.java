@@ -1,5 +1,6 @@
 package xyz.andrewkboyd.etltemplate.actors;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ public class PostgresqlNumberActor {
     private static final Logger LOG = LoggerFactory.getLogger(PostgresqlNumberActor.class);
     private final LatestNumbersDAO latestNumbersDAO;
 
-    public PostgresqlNumberActor(LatestNumbersDAO dao){
+    public PostgresqlNumberActor(@Qualifier("getPostgresqlLatestNumber") LatestNumbersDAO dao){
         latestNumbersDAO = dao;
     }
 
@@ -21,6 +22,6 @@ public class PostgresqlNumberActor {
         LOG.debug("Received number update for postgresql");
         var intVal = Integer.parseInt(value);
         latestNumbersDAO.insertNewNumber(intVal);
-        LOG.info("Added number to data store {}", intVal);
+        LOG.info("Added number to pg data store {}", intVal);
     }
 }
