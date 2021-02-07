@@ -1,9 +1,12 @@
 package xyz.andrewkboyd.etltemplate.controllers;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +23,19 @@ class TestControllerTests {
     private WebTestClient testClient;
 
     @MockBean
+    @Qualifier("getPostgresqlLatestNumber")
     LatestNumbersDAO dao;
 
+    @MockBean
+    @Qualifier("getInfluxLatestNumber")
+    LatestNumbersDAO influxDao;
+
+    @BeforeEach
+    void setup(){
+        Mockito.when(dao.getLatestNumber()).thenReturn(0);
+        Mockito.when(influxDao.getLatestNumber()).thenReturn(1);
+    }
+    
     @Test
     @WithMockUser(username = "test", roles={"user"})
     void echoNumberAPI() throws Exception
