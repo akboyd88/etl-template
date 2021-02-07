@@ -13,7 +13,7 @@ public abstract class BaseDaoImpl<T> implements BaseDAO<T> {
         db = influxDB;
     }
 
-    abstract Point getPointFromValue(T val);
+    public abstract Point getPointFromValue(T val);
 
     protected InfluxDB getDb() {
         return db;
