@@ -101,6 +101,7 @@ services:
     depends_on:
       - postgres
       - kafka
+      - influxdb
 volumes:
   database-data:
   kafka-logs:
