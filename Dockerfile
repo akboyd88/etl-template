@@ -1,6 +1,6 @@
 FROM alpine:3.13 AS LOCAL_FILES
 WORKDIR /app_files/
-ADD ./ ./
+COPY ./ ./
 
 FROM openjdk:15-jdk-alpine AS JAVA_BUILD
 WORKDIR /app_build/
