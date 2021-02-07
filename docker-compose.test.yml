@@ -89,7 +89,7 @@ services:
       context: .
       dockerfile: Dockerfile
     expose:
-      - "80"
+      - "9000"
     depends_on:
       - postgres
       - kafka
@@ -101,6 +101,7 @@ services:
     depends_on:
       - postgres
       - kafka
+      - influxdb
 volumes:
   database-data:
   kafka-logs:

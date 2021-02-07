@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.Collections;
+
 /**
  * Entry point for the spring boot application
  */
@@ -19,7 +21,9 @@ public class EtlTemplateApplication {
 	 */
 	public static void main(String[] args) {
 		try {
-			SpringApplication.run(EtlTemplateApplication.class, args);
+			SpringApplication app = new SpringApplication(EtlTemplateApplication.class);
+			app.setDefaultProperties(Collections.singletonMap("server.port", "9000"));
+			app.run(args);
 		} catch(Exception e) {
 			LOG.error("Error: ", e);
 		}

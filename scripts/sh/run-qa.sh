@@ -1,8 +1,13 @@
-#!/bin/sh
-./gradlew test jacocoReport
-if [ -z ${CODECOV_TOKEN+x} ]; then
-  echo "skipping reporting coverage to codecov"
+#!/usr/bin/env sh
+if ./gradlew test jacocoReport --info --stacktrace; then
+  if [ -z ${CODECOV_TOKEN+x} ]; then
+    echo "skipping reporting coverage to codecov"
+  else
+    bash -c '/bin/bash <(curl -s https://codecov.io/bash)'
+  fi
 else
-  bash -c '/bin/bash <(curl -s https://codecov.io/bash)'
+  exit 1
 fi
+
+
 

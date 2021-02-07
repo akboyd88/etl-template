@@ -1,36 +1,49 @@
 package xyz.andrewkboyd.etltemplate.controllers;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import xyz.andrewkboyd.etltemplate.dao.interfaces.LatestNumbersDAO;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(TestController.class)
+@WebFluxTest(TestController.class)
 class TestControllerTests {
     @Autowired
-    private MockMvc mvc;
+    private WebTestClient testClient;
 
+    @MockBean
+    public LatestNumbersDAO postgresqDAO;
 
+    @BeforeEach
+    void setup(){
+        Mockito.when(postgresqDAO.getLatestNumber()).thenReturn(0);
+    }
+    
     @Test
     @WithMockUser(username = "test", roles={"user"})
     void echoNumberAPI() throws Exception
     {
-        mvc.perform( MockMvcRequestBuilders
-                .get("/api/test/echo/11")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.echoNumber").value(11));
-
+        testClient.get()
+            .uri("/api/test/echo/11")
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .json("""
+                        {
+                           "echoNumber": 11
+                        }
+                        """);
     }
 
 
@@ -38,14 +51,10 @@ class TestControllerTests {
     @WithMockUser(username = "test", roles={"user"})
     void getLatestNumbers() throws Exception
     {
-        mvc.perform( MockMvcRequestBuilders
-                .get("/api/test/latest-numbers")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.postgresNumber").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.cassandraNumber").exists())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.influxNumber").exists());
-
-
+        testClient.get()
+                .uri("/api/test/latest-numbers")
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .exchange()
+                .expectStatus().isOk();
     }
 }
