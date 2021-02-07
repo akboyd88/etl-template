@@ -1,1 +1,1 @@
-gradlew.bat test jacocoReport
+gradlew.bat test jacocoReport --info --stacktrace
