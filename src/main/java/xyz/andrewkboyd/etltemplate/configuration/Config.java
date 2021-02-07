@@ -12,7 +12,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 public class Config implements WebFluxConfigurer {
 
     @Bean
-    WebFluxProperties getWebFluxProperties(){
+    public WebFluxProperties getWebFluxProperties(){
         return new WebFluxProperties();
     }
 }

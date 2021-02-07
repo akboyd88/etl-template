@@ -18,7 +18,7 @@ public class LatestNumbersImpl extends BaseDaoImpl<TestNumbers> implements Lates
     }
 
     @Override
-    Point getPointFromValue(TestNumbers val) {
+    public Point getPointFromValue(TestNumbers val) {
         return Point.measurement("test_number")
                 .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                 .addField("value", val.getValue())

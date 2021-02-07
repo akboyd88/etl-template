@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +22,10 @@ class TestControllerTests {
     private WebTestClient testClient;
 
     @MockBean
-    LatestNumbersDAO postgresqDAO;
+    public LatestNumbersDAO postgresqDAO;
 
     @MockBean
-    LatestNumbersDAO influxDAO;
+    public LatestNumbersDAO influxDAO;
 
     @BeforeEach
     void setup(){

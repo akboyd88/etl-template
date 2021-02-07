@@ -4,7 +4,6 @@ import org.influxdb.InfluxDB;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import xyz.andrewkboyd.etltemplate.controllers.TestController;
 import xyz.andrewkboyd.etltemplate.dao.interfaces.LatestNumbersDAO;
 import xyz.andrewkboyd.etltemplate.dao.postgresql.LatestNumbersImpl;
 
@@ -18,10 +17,10 @@ public class DaoConfig {
     }
 
     @Bean
-    LatestNumbersDAO postgresqDAO(){
+    public LatestNumbersDAO postgresqDAO(){
         return new LatestNumbersImpl();
     }
 
     @Bean
-    LatestNumbersDAO influxDAO() { return new xyz.andrewkboyd.etltemplate.dao.influx.LatestNumbersImpl(influxDB); }
+    public LatestNumbersDAO influxDAO() { return new xyz.andrewkboyd.etltemplate.dao.influx.LatestNumbersImpl(influxDB); }
 }

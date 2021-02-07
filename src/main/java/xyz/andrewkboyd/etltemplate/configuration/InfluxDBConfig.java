@@ -19,7 +19,7 @@ public class InfluxDBConfig {
     private String url;
 
     @Bean
-    InfluxDB getInfluxDB(){
+    public InfluxDB getInfluxDB(){
         return InfluxDBFactory.connect(getHostname(), getUsername(), getPassword());
     }
 

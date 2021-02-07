@@ -1,7 +1,6 @@
 package xyz.andrewkboyd.etltemplate.initializers;
 
 import org.influxdb.InfluxDB;
-import org.influxdb.dto.BoundParameterQuery;
 import org.influxdb.dto.Query;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
