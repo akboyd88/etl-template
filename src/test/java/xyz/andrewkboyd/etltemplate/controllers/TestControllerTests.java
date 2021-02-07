@@ -24,13 +24,9 @@ class TestControllerTests {
     @MockBean
     public LatestNumbersDAO postgresqDAO;
 
-    @MockBean
-    public LatestNumbersDAO influxDAO;
-
     @BeforeEach
     void setup(){
         Mockito.when(postgresqDAO.getLatestNumber()).thenReturn(0);
-        Mockito.when(influxDAO.getLatestNumber()).thenReturn(1);
     }
     
     @Test
