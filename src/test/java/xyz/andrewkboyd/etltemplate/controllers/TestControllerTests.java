@@ -23,17 +23,15 @@ class TestControllerTests {
     private WebTestClient testClient;
 
     @MockBean
-    @Qualifier("getPostgresqlLatestNumber")
-    LatestNumbersDAO dao;
+    LatestNumbersDAO postgresqDAO;
 
     @MockBean
-    @Qualifier("getInfluxLatestNumber")
-    LatestNumbersDAO influxDao;
+    LatestNumbersDAO influxDAO;
 
     @BeforeEach
     void setup(){
-        Mockito.when(dao.getLatestNumber()).thenReturn(0);
-        Mockito.when(influxDao.getLatestNumber()).thenReturn(1);
+        Mockito.when(postgresqDAO.getLatestNumber()).thenReturn(0);
+        Mockito.when(influxDAO.getLatestNumber()).thenReturn(1);
     }
     
     @Test

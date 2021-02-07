@@ -1,5 +1,6 @@
 package xyz.andrewkboyd.etltemplate.actors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,8 @@ public class PostgresqlNumberActor {
     private static final Logger LOG = LoggerFactory.getLogger(PostgresqlNumberActor.class);
     private final LatestNumbersDAO latestNumbersDAO;
 
-    public PostgresqlNumberActor(@Qualifier("getPostgresqlLatestNumber") LatestNumbersDAO dao){
-        latestNumbersDAO = dao;
+    public PostgresqlNumberActor(@Autowired LatestNumbersDAO postgresqDAO){
+        latestNumbersDAO = postgresqDAO;
     }
 
     @KafkaListener(topics = "test.number", groupId = "test.number.pg")

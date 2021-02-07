@@ -2,6 +2,7 @@ package xyz.andrewkboyd.etltemplate.actors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,8 @@ public class InfluxNumberActor {
 
     private final LatestNumbersDAO numbersDAO;
 
-    public InfluxNumberActor(@Qualifier("getInfluxLatestNumber")LatestNumbersDAO latestNumbersDAO) {
-        this.numbersDAO = latestNumbersDAO;
+    public InfluxNumberActor(@Autowired LatestNumbersDAO influxDAO) {
+        this.numbersDAO = influxDAO;
     }
 
     @KafkaListener(topics = "test.number", groupId = "test.number.influx")

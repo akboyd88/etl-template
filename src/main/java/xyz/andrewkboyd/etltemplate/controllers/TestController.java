@@ -1,5 +1,6 @@
 package xyz.andrewkboyd.etltemplate.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,16 +16,16 @@ import xyz.andrewkboyd.etltemplate.dto.LatestNumbers;
 @RestController
 @RequestMapping("api/test")
 public class TestController {
-
+    
     private final LatestNumbersDAO postgresNumberDao;
     private final LatestNumbersDAO influxNumbersDao;
 
     public TestController(
-            @Qualifier("getPostgresqlLatestNumber") LatestNumbersDAO pgDao,
-            @Qualifier("getInfluxLatestNumber")LatestNumbersDAO influxDao
+            @Autowired LatestNumbersDAO postgresqDAO,
+            @Autowired LatestNumbersDAO influxDAO
     ) {
-        postgresNumberDao = pgDao;
-        influxNumbersDao = influxDao;
+        postgresNumberDao = postgresqDAO;
+        influxNumbersDao = influxDAO;
     }
 
     /**
